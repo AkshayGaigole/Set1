@@ -34,6 +34,8 @@ object q2 {
       ("aadil", 32000)
     ).toDF("name", "total_sales")
 
+    /*
+
     val sales_df2=sales.withColumn("performance_status",
       when(col("total_sales")>50000,"Excellent")
         .when(col("total_sales")>=25000 && col("total_Sales")<=50000,"Good")
@@ -43,10 +45,15 @@ object q2 {
     val sales_df3=sales_df2.select(initcap(col("name")),col("total_Sales"),col("performance_status"))
     sales_df3.show()
 
+    sales_df3.groupBy("performance_status").agg(sum("total_sales")).as("agg_total_Sales").show()*/
 
-    sales_df3.groupBy("performance_status").agg(sum("total_sales")).as("agg_total_Sales").show()
 
+    val sales_df4=sales.select(initcap(col("name")) as("name"),col("total_Sales"),when(col("total_sales")>50000,"Excellent")
+      .when(col("total_sales")>=25000 && col("total_Sales")<=50000,"Good")
+      .otherwise("Needs Improvement").as("performance_status"))
 
+    sales_df4.show()
+    sales_df4.groupBy("performance_status").agg(sum("total_sales")).as("agg_total_Sales").show()
 
 
   }
